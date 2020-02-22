@@ -1,6 +1,8 @@
 import React from 'react'
 import { View, Text, Image, ScrollView } from 'react-native'
 import { styles } from './movieStyles'
+import Header from '../../components/Header/Header'
+import Button from '../../components/Button/Button'
 import API, { imageBaseUrl } from '../../API'
 
 export default class Movie extends React.Component {
@@ -52,6 +54,11 @@ export default class Movie extends React.Component {
         const { image, title, tagline, description, release_date, popularity, genres } = this.state
         return (
             <View style={container}>
+                <Header
+                    leftIcon="chevron-left"
+                    // rightIcon="bars"
+                    onPressLeftIcon={() => this.props.navigation.goBack()}
+                />
                 <ScrollView>
                     <View style={imageContainer}>
                         <Image 

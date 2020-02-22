@@ -2,6 +2,7 @@ import React from 'react'
 import { View, Text, FlatList, ActivityIndicator } from 'react-native'
 import ItemVertical from '../../components/ItemVertical/ItemVertical'
 import ItemHorizontal from '../../components/ItemHorizontal/ItemHorizontal'
+import Header from '../../components/Header/Header'
 import { styles } from './homeStyles'
 import API from '../../API'
 
@@ -72,6 +73,10 @@ export default class Home extends React.Component {
       } else {
          return (
             <View style={container}>
+               <Header 
+                  rightIcon="power-off"
+                  onPressRightIcon={() => this.props.navigation.navigate("LogIn")}
+               />
                <Text style={title}>Upcoming Movies</Text>
                <View>
                   <FlatList 

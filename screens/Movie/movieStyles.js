@@ -24,26 +24,26 @@ export const styles = EStyleSheet.create({
         marginRight: "30rem"
    },
    textTitle: {
-       fontSize: "18rem",
+       fontSize: "22rem",
        fontWeight: "bold",
        color: "#0040C9",
        textAlign: "center",
        paddingBottom: "5rem"
    }, 
    textTagline: {
-        fontSize: "16rem",
+        fontSize: "20rem",
         fontWeight: "bold",
         color: "#0040C9",
         textAlign: "center",
         paddingBottom: "5rem"
    },
    textDescr: {
-        fontSize: "16rem",
+        fontSize: "18rem",
         color: "#32A1F0",
         paddingBottom: "5rem"
    },
    textTitleSmall: {
-        fontSize: "16rem",
+        fontSize: "18rem",
         fontWeight: "bold",
         color: "#0040C9",
         paddingBottom: "5rem"

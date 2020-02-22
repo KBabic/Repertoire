@@ -39,7 +39,7 @@ export default class LogIn extends React.Component {
    handleContinue = () => {
       const { buttonDisabled, email, password } = this.state
       if (!buttonDisabled && email === this.email && password === this.password) {
-         this.props.navigation.navigate("Home")
+         this.setState({ email: "", password: "" }, () => this.props.navigation.navigate("Home"))
       } else {
          Alert.alert("Error", "Your email or password is incorrect!", [{ title: "OK" }])
       }
@@ -64,7 +64,7 @@ export default class LogIn extends React.Component {
                onPressEye={this.handlePressEye}
                secure={this.state.secure}
                onChange={(txt) => this.onChangeParam("password", txt)}
-               value={this.state.pass1}
+               value={this.state.password}
                ref="input2"
                blur={true}
             />

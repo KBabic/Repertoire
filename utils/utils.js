@@ -5,3 +5,12 @@ export const getShortText = (txt, num) => {
         return txt
     }
 }
+export const getJustifyContent = (val1, val2) => {
+    if (!val1) {
+        return "flex-end"
+    }
+    if (!val2) {
+        return "flex-start"
+    }
+    return "space-between"
+}

@@ -24,7 +24,6 @@ export const styles = EStyleSheet.create({
    image: {
       width: "100%",
       height: "180rem",
-      resizeMode: "stretch",
       borderTopLeftRadius: "8rem",
       borderTopRightRadius: "8rem"
    },

@@ -23,7 +23,7 @@ export default Input = React.forwardRef((props, ref) => {
             placeholder={props.placeholder}
             autoCorrect={false}
             autoCapitalize="none"
-            blurOnSubmit={true}
+            blurOnSubmit={props.blur}
             onChangeText={(txt) => props.onChange(txt)}
             onSubmitEditing={props.onSubmit}
             secureTextEntry={props.secure}

@@ -57,6 +57,7 @@ export default class SignUp extends React.Component {
                value={this.state.name}
                ref="input1"
                onSubmit={() => this.refs.input2.focus()}
+               blur={false}
             />
             <Input 
                icon="envelope" 
@@ -65,6 +66,7 @@ export default class SignUp extends React.Component {
                value={this.state.email}
                ref="input2"
                onSubmit={() => this.refs.input3.focus()}
+               blur={false}
             />
             <Input 
                icon="key" 
@@ -76,6 +78,7 @@ export default class SignUp extends React.Component {
                value={this.state.pass1}
                ref="input3"
                onSubmit={() => this.refs.input4.focus()}
+               blur={false}
             />
             <Input 
                icon="key" 
@@ -86,6 +89,7 @@ export default class SignUp extends React.Component {
                onChange={(txt) => this.onChangeParam("pass2", txt)}
                value={this.state.pass2}
                ref="input4"
+               blur={true}
             />
             <Button 
                text="Continue" 

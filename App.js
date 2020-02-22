@@ -6,6 +6,7 @@ import Welcome from './screens/Welcome/Welcome'
 import SignUp from './screens/SignUp/SignUp'
 import LogIn from './screens/LogIn/LogIn'
 import Home from './screens/Home/Home'
+import Movie from './screens/Movie/Movie'
 
 const Stack = createStackNavigator()
 function App() {
@@ -16,6 +17,7 @@ function App() {
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="LogIn" component={LogIn} />
         <Stack.Screen name="Home" component={Home} />
+        <Stack.Screen name="Movie" component={Movie} />
       </Stack.Navigator>
     </NavigationContainer>
   )

@@ -55,6 +55,7 @@ export default class LogIn extends React.Component {
                value={this.state.email}
                ref="input1"
                onSubmit={() => this.refs.input2.focus()}
+               blur={false}
             />
             <Input 
                icon="key" 
@@ -65,6 +66,7 @@ export default class LogIn extends React.Component {
                onChange={(txt) => this.onChangeParam("password", txt)}
                value={this.state.pass1}
                ref="input2"
+               blur={true}
             />
             <Button 
                text="Continue" 

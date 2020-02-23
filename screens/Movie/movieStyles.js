@@ -48,5 +48,12 @@ export const styles = EStyleSheet.create({
         fontWeight: "bold",
         color: "#4a4f54",
         paddingBottom: "5rem"
+   },
+   videoStyle: {
+        alignSelf: "center",
+        width: "330rem",
+        height: "300rem",
+        marginTop: "20rem",
+        marginBottom: "50rem"
    }
 })

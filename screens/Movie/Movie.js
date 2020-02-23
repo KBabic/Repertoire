@@ -1,5 +1,6 @@
 import React from 'react'
 import { View, Text, Image, ScrollView, BackHandler } from 'react-native'
+import { WebView } from 'react-native-webview'
 import { styles } from './movieStyles'
 import Header from '../../components/Header/Header'
 import API, { imageBaseUrl } from '../../API'
@@ -17,6 +18,7 @@ class Movie extends React.Component {
     @observable release_date = ""
     @observable genres = []
     @observable popularity = null
+    @observable video = ""
 
     async componentDidMount() {
         BackHandler.addEventListener("hardwareBackPress", this.handleAndroidBack)
@@ -56,7 +58,8 @@ class Movie extends React.Component {
             textTitle, 
             textTagline, 
             textDescr, 
-            textTitleSmall 
+            textTitleSmall,
+            videoStyle
         } = styles
         return (
             <View style={container}>
@@ -81,8 +84,14 @@ class Movie extends React.Component {
                         {this.genres.map((el,i) => (
                             <Text key={i} style={textDescr}>{el}</Text>
                         ))}
-                        
-                    </View>   
+                    </View>
+                    {this.video !== "" && (
+                        <WebView 
+                            style={videoStyle}
+                            javaScriptEnabled={true}
+                            source={{ uri: this.video }}
+                        />
+                    )}
                 </ScrollView>
             </View>
         )

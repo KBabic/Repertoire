@@ -14,6 +14,10 @@ export const getJustifyContent = (val1, val2) => {
     }
     return "space-between"
 }
+export const filterByGenre = (arr, id) => {
+  const filtered = arr.filter(el => el.genre_ids.includes(id))
+  return [...filtered]
+}
 
 export const genres = [
     {

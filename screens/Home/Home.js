@@ -6,6 +6,7 @@ import Header from '../../components/Header/Header'
 import Menu from '../../components/Menu/Menu'
 import { styles } from './homeStyles'
 import API from '../../API'
+import { filterByGenre } from '../../utils/utils'
 
 const windowWidth = Dimensions.get('window').width
 
@@ -13,7 +14,9 @@ export default class Home extends React.Component {
    state = {
       loading: true,
       nowPlaying: [],
+      pagePlaying: 1,
       upcoming: [],
+      pageUpcoming: 1,
       menuOpen: false,
       currentGenre: 777,
       x: new Animated.Value(-windowWidth)
@@ -40,6 +43,14 @@ export default class Home extends React.Component {
          )
          return true
       }
+   }
+   handleLoadMorePlaying = () => {
+      this.getNowPlaying(this.state.pagePlaying + 1)
+      this.setState(prevState => ({ pagePlaying: prevState.pagePlaying + 1 }))
+   }
+   handleLoadMoreUpcoming = () => {
+      this.getUpcoming(this.state.pageUpcoming + 1)
+      this.setState(prevState => ({ pageUpcoming: prevState.pageUpcoming + 1 }))
    }
    renderItemVertical = ({ item }) => {
       const { id, backdrop_path, original_title, release_date } = item
@@ -82,8 +93,31 @@ export default class Home extends React.Component {
          }).start(() => this.setState({ menuOpen: true }))
       }
    }
-   handlePressGenre = (id) => {
-      this.setState({ currentGenre: id })
+   clearLists = () => {
+      this.setState({
+         nowPlaying: [],
+         upcoming: []
+      })
+   }
+   resetSearch = async () => {
+      this.clearLists()
+      await this.getNowPlaying(1)
+      await this.getUpcoming(1)
+   }
+   handlePressGenre = async (id) => {
+      // if user pressed All or Favorites
+      if (id === 777 || id === 888){
+         this.setState({ currentGenre: id })
+         await this.resetSearch()
+      // if user pressed one of the genres
+      } else {
+         await this.resetSearch()
+         this.setState({ 
+            currentGenre: id,
+            nowPlaying: filterByGenre(this.state.nowPlaying, id),
+            upcoming: filterByGenre(this.state.upcoming, id)
+         })
+      }
    }
    render() {
       const { container, title, menu } = styles
@@ -112,9 +146,12 @@ export default class Home extends React.Component {
                <View>
                   <FlatList 
                      data={this.state.upcoming}
+                     extraData={this.state.upcoming}
                      renderItem={this.renderItemHorizontal}
                      keyExtractor={item => item.id.toString()}
                      horizontal={true}
+                     onEndReached={this.handleLoadMoreUpcoming}
+                     onEndReachedThreshold={0}
                   />
                </View>
                
@@ -122,8 +159,11 @@ export default class Home extends React.Component {
                <View>
                   <FlatList
                      data={this.state.nowPlaying}
+                     extraData={this.state.nowPlaying}
                      renderItem={this.renderItemVertical}
                      keyExtractor={item => item.id.toString()}
+                     onEndReached={this.handleLoadMorePlaying}
+                     onEndReachedThreshold={0}
                   />
                </View>
             </View>

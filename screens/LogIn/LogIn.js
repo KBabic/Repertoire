@@ -3,7 +3,6 @@ import { View, Alert } from 'react-native'
 import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
 import { styles } from './logInStyles'
-import API from '../../API'
 import { observer, inject } from 'mobx-react'
 import { observable } from 'mobx'
 

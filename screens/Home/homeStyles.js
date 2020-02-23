@@ -5,6 +5,12 @@ export const styles = EStyleSheet.create({
       flex: 1,
       backgroundColor: "#ffffff"
    },
+   spinner: {
+      flex: 1,
+      backgroundColor: "#ffffff",
+      justifyContent: "center",
+      alignItems: "center"
+   },
    title: {
       padding: "10rem",
       textAlign: "center",

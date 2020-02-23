@@ -3,6 +3,7 @@ import { View, TouchableOpacity } from 'react-native'
 import { Icon } from 'react-native-elements'
 import { styles } from './headerStyles'
 import { getJustifyContent } from '../../utils/utils'
+
 const Header = props => {
     const { header } = styles
     const justifyContent = getJustifyContent(props.leftIcon, props.rightIcon)

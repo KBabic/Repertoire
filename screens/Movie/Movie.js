@@ -22,6 +22,7 @@ class Movie extends React.Component {
         BackHandler.addEventListener("hardwareBackPress", this.handleAndroidBack)
         this._mounted = true
         const movie = await API.getMovie(this.props.store.movieId)
+        this.video = await API.getVideo(this.props.store.movieId)
         movie && this.updateState(movie)
     }
     componentWillUnmount() {

@@ -1,4 +1,5 @@
 import { observable, action } from 'mobx'
+import AsyncStorage from '@react-native-community/async-storage'
 
 class AppStore {
     @observable name = ""
@@ -11,3 +12,19 @@ class AppStore {
     @action updateMovieId = num => this.movieId = num
 }
 export default AppStore
+
+export const storeItem = async (key, value) => {
+    try {
+        await AsyncStorage.setItem(key, value)
+    } catch(e) {
+        console.log(e)
+    }
+}
+export const getItem = async (key) => {
+    try {
+        const item = await AsyncStorage.getItem(key)
+        return item
+    } catch(e) {
+        console.log(e)
+    }
+}

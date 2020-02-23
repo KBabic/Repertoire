@@ -3,7 +3,7 @@ import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import { Provider } from 'mobx-react'
-import AppStore from './store/store'
+import AppStore  from './store/store'
 
 import Welcome from './screens/Welcome/Welcome'
 import SignUp from './screens/SignUp/SignUp'

@@ -8,26 +8,28 @@ import { styles } from './homeStyles'
 import API from '../../API'
 import { filterByGenre } from '../../utils/utils'
 import { observer, inject } from 'mobx-react'
-import { action } from 'mobx'
+import { observable } from 'mobx'
 
 const windowWidth = Dimensions.get('window').width
 
 @inject("store")
 @observer
 class Home extends React.Component {
-   state = {
-      loading: true,
-      nowPlaying: [],
-      pagePlaying: 1,
-      upcoming: [],
-      pageUpcoming: 1,
-      menuOpen: false,
-      currentGenre: 777,
-      x: new Animated.Value(-windowWidth)
-   }
+   
+   @observable loading = true
+   @observable nowPlaying = []
+   @observable pagePlaying = 1
+   @observable upcoming = []
+   @observable pageUpcoming = 1
+   @observable menuOpen = false
+   @observable currentGenre = 777
+   @observable x = new Animated.Value(-windowWidth)
+
    async componentDidMount() {
       BackHandler.addEventListener("hardwareBackPress", () => true)
-      this.getNowPlaying(1) && this.getUpcoming(1) && this.setState({ loading: false })
+         await this.getNowPlaying(1)
+         await this.getUpcoming(1)
+         this.loading = false
    }
    componentWillUnmount() {
       BackHandler.removeEventListener("hardwareBackPress", () => true)
@@ -35,30 +37,23 @@ class Home extends React.Component {
    async getNowPlaying(i) {
       const nowPlaying = await API.getList(API.getNowPlayingUrl(i))
       if (nowPlaying) {
-         this.total = await nowPlaying[0]
-         this.setState(prevState => 
-            ({ nowPlaying: [...prevState.nowPlaying, ...nowPlaying[1] ]})
-         )
-         return true
+         this.nowPlaying = [...this.nowPlaying, ...nowPlaying[1]]
       }
    }
    async getUpcoming(i) {
       const upcoming = await API.getList(API.getUpcomingUrl(i))
       if (upcoming) {
          this.total = await upcoming[0]
-         this.setState(prevState => 
-            ({ upcoming: [...prevState.upcoming, ...upcoming[1] ]})
-         )
-         return true
+         this.upcoming = [...this.upcoming, ...upcoming[1]]
       }
    }
    handleLoadMorePlaying = () => {
-      this.getNowPlaying(this.state.pagePlaying + 1)
-      this.setState(prevState => ({ pagePlaying: prevState.pagePlaying + 1 }))
+      this.getNowPlaying(this.pagePlaying + 1)
+      this.pagePlaying++
    }
    handleLoadMoreUpcoming = () => {
-      this.getUpcoming(this.state.pageUpcoming + 1)
-      this.setState(prevState => ({ pageUpcoming: prevState.pageUpcoming + 1 }))
+      this.getUpcoming(this.pageUpcoming + 1)
+      this.pageUpcoming++
    }
    renderItemVertical = ({ item }) => {
       const { id, backdrop_path, original_title, release_date } = item
@@ -85,31 +80,28 @@ class Home extends React.Component {
       )
    }
    handlePressItem = async (id) => {
-      // await API.setParam("movieId", id.toString())
       this.props.store.updateMovieId(id)
       this.props.navigation.navigate("Movie")
    }
    toggleMenu = () => {
-      if (this.state.menuOpen) {
-         Animated.timing(this.state.x, {
+      if (this.menuOpen) {
+         Animated.timing(this.x, {
             toValue: -windowWidth,
             duration: 250,
             useNativeDriver: true
-         }).start(() => this.setState({ menuOpen: false }))
+         }).start(() => this.menuOpen = false)
          
       } else {
-         Animated.timing(this.state.x, {
+         Animated.timing(this.x, {
             toValue: 0,
             duration: 250,
             useNativeDriver: true
-         }).start(() => this.setState({ menuOpen: true }))
+         }).start(() => this.menuOpen = true)
       }
    }
    clearLists = () => {
-      this.setState({
-         nowPlaying: [],
-         upcoming: []
-      })
+      this.nowPlaying = []
+      this.upcoming = []
    }
    resetSearch = async () => {
       this.clearLists()
@@ -119,25 +111,22 @@ class Home extends React.Component {
    handlePressGenre = async (id) => {
       // if user pressed All or Favorites
       if (id === 777 /*|| id === 888*/){
-         this.setState({ currentGenre: id })
+         this.currentGenre = id
          await this.resetSearch()
       // if user pressed one of the genres
       } else {
-         this.setState({ currentGenre: id })
+         this.currentGenre = id
          await this.resetSearch()
-         this.setState({ 
-            // currentGenre: id,
-            nowPlaying: filterByGenre(this.state.nowPlaying, id),
-            upcoming: filterByGenre(this.state.upcoming, id)
-         })
+         this.nowPlaying = filterByGenre(this.nowPlaying, id)
+         this.upcoming = filterByGenre(this.upcoming, id)
       }
    }
    render() {
-      const { container, title, menu, list } = styles
-      if (this.state.loading) {
+      const { container, spinner, title, menu, list } = styles
+      if (this.loading) {
          return (
-            <View style={styles.container}>
-               <ActivityIndicator size="large" />
+            <View style={spinner}>
+               <ActivityIndicator size="large" color="#0040C9" />
             </View>
          )
       } else {
@@ -149,17 +138,17 @@ class Home extends React.Component {
                   onPressRightIcon={() => this.props.navigation.navigate("LogIn")}
                   onPressLeftIcon={this.toggleMenu}
                />
-               <Animated.View  style={[menu, {transform: [{ translateX: this.state.x }] }]}>
+               <Animated.View  style={[menu, {transform: [{ translateX: this.x }] }]}>
                   <Menu 
                      onPressItem={this.handlePressGenre} 
-                     currentItem={this.state.currentGenre}
+                     currentItem={this.currentGenre}
                   />
                </Animated.View>
                <Text style={title}>Upcoming Movies</Text>
                <View>
                   <FlatList 
-                     data={this.state.upcoming}
-                     extraData={this.state.upcoming}
+                     data={this.upcoming}
+                     extraData={this.upcoming}
                      renderItem={this.renderItemHorizontal}
                      keyExtractor={item => item.id.toString()}
                      horizontal={true}
@@ -171,8 +160,8 @@ class Home extends React.Component {
                <Text style={title}>Now Playing</Text>
                <View>
                   <FlatList
-                     data={this.state.nowPlaying}
-                     extraData={this.state.nowPlaying}
+                     data={this.nowPlaying}
+                     extraData={this.nowPlaying}
                      renderItem={this.renderItemVertical}
                      keyExtractor={item => item.id.toString()}
                      onEndReached={this.handleLoadMorePlaying}

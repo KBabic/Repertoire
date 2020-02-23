@@ -88,6 +88,26 @@ class API {
          }
       }
    }
+
+   async getVideo(id) {
+      if (checkInternetConnection()) {
+         try {
+            let response = await fetch(
+               `${baseUrl}${id}/videos?api_key=${key}&language=en-US`, {
+                  method: "GET",
+                  headers
+               }
+            )
+            let res = await response.json()
+            if (res.results[0]) {
+               return "https://www.youtube.com/watch?v=" +  res.results[0].key
+            }
+         } catch(e) {
+            console.log(e)
+            alertError()
+         }
+      }
+   }
 }
 
 export default new API()

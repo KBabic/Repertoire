@@ -5,6 +5,7 @@ import Button from '../../components/Button/Button'
 import { styles } from './signUpStyles'
 import { observer, inject } from 'mobx-react'
 import { observable } from 'mobx'
+import { storeItem } from '../../store/store'
 
 @inject("store")
 @observer
@@ -20,6 +21,7 @@ class SignUp extends React.Component {
    @observable secure2 = true
    @observable buttonDisabled = true
    @observable buttonColor = "#bbbec4"
+   
    handlePressEye1 = () => {
       if (this.eye1 === "eye") {
          this.eye1 = "eye-slash"
@@ -51,8 +53,11 @@ class SignUp extends React.Component {
    handleContinue = async () => {
       if (!this.buttonDisabled) {
          this.props.store.updateName(this.name)
+         storeItem("name", this.name)
          this.props.store.updateEmail(this.email)
+         storeItem("email", this.email)
          this.props.store.updatePassword(this.pass2)
+         storeItem("password", this.pass2)
          this.props.navigation.navigate("Home")
       }
    }  

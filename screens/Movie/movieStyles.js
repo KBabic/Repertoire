@@ -52,7 +52,7 @@ export const styles = EStyleSheet.create({
    videoStyle: {
         alignSelf: "center",
         width: "330rem",
-        height: "300rem",
+        height: "360rem",
         marginTop: "20rem",
         marginBottom: "50rem"
    }

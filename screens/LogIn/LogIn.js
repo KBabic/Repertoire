@@ -4,42 +4,50 @@ import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
 import { styles } from './logInStyles'
 import API from '../../API'
+import { observer } from 'mobx-react'
+import { observable } from 'mobx'
 
-export default class LogIn extends React.Component {
-   state = {
-      email: "",
-      password: "",
-      eye: "eye-slash",
-      secure: true,
-      buttonDisabled: true,
-      buttonColor: "#bbbec4"
-   }
+@observer
+class LogIn extends React.Component {
+
+   @observable email = ""
+   @observable password = ""
+   @observable eye = "eye-slash"
+   @observable secure = true
+   @observable buttonDisabled = true
+   @observable buttonColor = "#bbbec4"
+
    async componentDidMount() {
-      this.email = await API.getParam("email")
-      this.password = await API.getParam("password")
+      this.storedEmail = await API.getParam("email")
+      this.storedPassword = await API.getParam("password")
    }
    handlePressEye = () => {
-      if (this.state.eye === "eye") {
-         this.setState({ eye: "eye-slash", secure: true })
+      if (this.eye === "eye") {
+         this.eye = "eye-slash"
+         this.secure = true
       } else {
-         this.setState({ eye: "eye", secure: false })
+         this.eye = "eye"
+         this.secure = false
       }
-   }
-   onChangeParam = (param, txt) => {
-      this.setState({ [param]: txt }, this.checkValidity)
    }
    checkValidity = () => {
-      const { email, password } = this.state
-      if (email !=="" && password !=="") {
-         this.setState({ buttonDisabled: false, buttonColor: "#32A1F0" })
-         return 
+      if (this.email !== "" && this.password !== "") {
+         this.buttonDisabled = false
+         this.buttonColor = "#32A1F0"
+      } else {
+         this.buttonDisabled = true
+         this.buttonColor = "#bbbec4"
       }
-      this.setState({ buttonDisabled: true, buttonColor: "#bbbec4"})
    }
    handleContinue = () => {
-      const { buttonDisabled, email, password } = this.state
-      if (!buttonDisabled && email === this.email && password === this.password) {
-         this.setState({ email: "", password: "" }, () => this.props.navigation.navigate("Home"))
+      if (
+         !this.buttonDisabled && 
+         this.email === this.storedEmail &&
+         this.password === this.storedPassword
+      ) {
+         this.email = ""
+         this.password = ""
+         this.props.navigation.navigate("Home")
       } else {
          Alert.alert("Error", "Your email or password is incorrect!", [{ title: "OK" }])
       }
@@ -51,30 +59,32 @@ export default class LogIn extends React.Component {
             <Input 
                icon="envelope" 
                placeholder="Enter Your Email Address"
-               onChange={(txt) => this.onChangeParam("email", txt)}
-               value={this.state.email}
+               onChange={(txt) => this.email = txt}
+               value={this.email}
                ref="input1"
                onSubmit={() => this.refs.input2.focus()}
                blur={false}
             />
             <Input 
                icon="key" 
-               icon2={this.state.eye} 
+               icon2={this.eye}
                placeholder="Enter Password"
                onPressEye={this.handlePressEye}
                secure={this.state.secure}
-               onChange={(txt) => this.onChangeParam("password", txt)}
-               value={this.state.password}
+               onChange={(txt) => this.password = txt}
+               onSubmit={() => this.checkValidity()}
+               value={this.password}
                ref="input2"
                blur={true}
             />
             <Button 
                text="Continue" 
                onPress={this.handleContinue}
-               color={this.state.buttonColor}
-               disabled={this.state.buttonDisabled}
+               color={this.buttonColor}
+               disabled={this.buttonDisabled}
             />
          </View>
       )
    }
 }
+export default LogIn

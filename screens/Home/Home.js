@@ -1,16 +1,22 @@
 import React from 'react'
-import { View, Text, FlatList, ActivityIndicator } from 'react-native'
+import { View, Text, FlatList, ActivityIndicator, Animated, Dimensions } from 'react-native'
 import ItemVertical from '../../components/ItemVertical/ItemVertical'
 import ItemHorizontal from '../../components/ItemHorizontal/ItemHorizontal'
 import Header from '../../components/Header/Header'
+import Menu from '../../components/Menu/Menu'
 import { styles } from './homeStyles'
 import API from '../../API'
+
+const windowWidth = Dimensions.get('window').width
 
 export default class Home extends React.Component {
    state = {
       loading: true,
       nowPlaying: [],
-      upcoming: []
+      upcoming: [],
+      menuOpen: false,
+      currentGenre: 777,
+      x: new Animated.Value(-windowWidth)
    }
    async componentDidMount() {
       this.getNowPlaying(1) && this.getUpcoming(1) && this.setState({ loading: false })
@@ -62,8 +68,25 @@ export default class Home extends React.Component {
       await API.setParam("movieId", id.toString())
       this.props.navigation.navigate("Movie")
    }
+   toggleMenu = () => {
+      if (this.state.menuOpen) {
+         Animated.timing(this.state.x, {
+            toValue: -windowWidth,
+            duration: 300
+         }).start(() => this.setState({ menuOpen: false }))
+         
+      } else {
+         Animated.timing(this.state.x, {
+            toValue: 0,
+            duration: 300
+         }).start(() => this.setState({ menuOpen: true }))
+      }
+   }
+   handlePressGenre = (id) => {
+      this.setState({ currentGenre: id })
+   }
    render() {
-      const { container, title } = styles
+      const { container, title, menu } = styles
       if (this.state.loading) {
          return (
             <View style={styles.container}>
@@ -75,8 +98,16 @@ export default class Home extends React.Component {
             <View style={container}>
                <Header 
                   rightIcon="power-off"
+                  leftIcon="bars"
                   onPressRightIcon={() => this.props.navigation.navigate("LogIn")}
+                  onPressLeftIcon={this.toggleMenu}
                />
+               <Animated.View  style={[menu, {transform: [{ translateX: this.state.x }] }]}>
+                  <Menu 
+                     onPressItem={this.handlePressGenre} 
+                     currentItem={this.state.currentGenre}
+                  />
+               </Animated.View>
                <Text style={title}>Upcoming Movies</Text>
                <View>
                   <FlatList 

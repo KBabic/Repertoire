@@ -70,7 +70,7 @@ class LogIn extends React.Component {
                icon2={this.eye}
                placeholder="Enter Password"
                onPressEye={this.handlePressEye}
-               secure={this.state.secure}
+               secure={this.secure}
                onChange={(txt) => this.password = txt}
                onSubmit={() => this.checkValidity()}
                value={this.password}

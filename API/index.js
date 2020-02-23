@@ -1,4 +1,3 @@
-import AsyncStorage from '@react-native-community/async-storage'
 import NetInfo from '@react-native-community/netinfo'
 import { Alert } from 'react-native'
 
@@ -26,28 +25,7 @@ const alertError = () => {
 }
 
 class API {
-   async getParam(key) {
-      try {
-         const param = await AsyncStorage.getItem(key)
-         return param
-      } catch(e) {
-         console.log(e)
-      }
-   }
-   async setParam(key, value) {
-      try {
-         await AsyncStorage.setItem(key, value)
-      } catch(e) {
-         console.log(e)
-      }
-   }
-   async removeParam(key) {
-      try {
-         await AsyncStorage.removeItem(key)
-      } catch(e) {
-         console.log(e)
-      }
-   }
+   
    getNowPlayingUrl = (i) => `${baseUrl}now_playing?api_key=${key}&language=en-US&page=${i}&region=DE`
    getUpcomingUrl = (i) => `${baseUrl}upcoming?api_key=${key}&language=en-US&page=${i}&region=DE`
    

@@ -4,9 +4,10 @@ import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
 import { styles } from './logInStyles'
 import API from '../../API'
-import { observer } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
 import { observable } from 'mobx'
 
+@inject("store")
 @observer
 class LogIn extends React.Component {
 
@@ -17,10 +18,6 @@ class LogIn extends React.Component {
    @observable buttonDisabled = true
    @observable buttonColor = "#bbbec4"
 
-   async componentDidMount() {
-      this.storedEmail = await API.getParam("email")
-      this.storedPassword = await API.getParam("password")
-   }
    handlePressEye = () => {
       if (this.eye === "eye") {
          this.eye = "eye-slash"
@@ -42,8 +39,8 @@ class LogIn extends React.Component {
    handleContinue = () => {
       if (
          !this.buttonDisabled && 
-         this.email === this.storedEmail &&
-         this.password === this.storedPassword
+         this.email === this.props.store.email &&
+         this.password === this.props.store.password
       ) {
          this.email = ""
          this.password = ""

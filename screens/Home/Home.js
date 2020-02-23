@@ -7,10 +7,14 @@ import Menu from '../../components/Menu/Menu'
 import { styles } from './homeStyles'
 import API from '../../API'
 import { filterByGenre } from '../../utils/utils'
+import { observer, inject } from 'mobx-react'
+import { action } from 'mobx'
 
 const windowWidth = Dimensions.get('window').width
 
-export default class Home extends React.Component {
+@inject("store")
+@observer
+class Home extends React.Component {
    state = {
       loading: true,
       nowPlaying: [],
@@ -81,7 +85,8 @@ export default class Home extends React.Component {
       )
    }
    handlePressItem = async (id) => {
-      await API.setParam("movieId", id.toString())
+      // await API.setParam("movieId", id.toString())
+      this.props.store.updateMovieId(id)
       this.props.navigation.navigate("Movie")
    }
    toggleMenu = () => {
@@ -180,3 +185,4 @@ export default class Home extends React.Component {
       }
    }
 }
+export default Home

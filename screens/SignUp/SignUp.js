@@ -3,13 +3,13 @@ import { View } from 'react-native'
 import Input from '../../components/Input/Input'
 import Button from '../../components/Button/Button'
 import { styles } from './signUpStyles'
-import API from '../../API'
-import { observer } from 'mobx-react'
+import { observer, inject } from 'mobx-react'
 import { observable } from 'mobx'
 
+@inject("store")
 @observer
 class SignUp extends React.Component {
-   
+
    @observable name = ""
    @observable email = ""
    @observable pass1 = ""
@@ -20,13 +20,22 @@ class SignUp extends React.Component {
    @observable secure2 = true
    @observable buttonDisabled = true
    @observable buttonColor = "#bbbec4"
-   handlePressEye = (eye, secure) => {
-      if (eye === "eye") {
-         eye === "eye-slash"
-         secure = true
+   handlePressEye1 = () => {
+      if (this.eye1 === "eye") {
+         this.eye1 = "eye-slash"
+         this.secure1 = true
       } else {
-         eye = "eye"
-         secure = false
+         this.eye1 = "eye"
+         this.secure1 = false
+      }
+   }
+   handlePressEye2 = () => {
+      if (this.eye2 === "eye") {
+         this.eye2 = "eye-slash"
+         this.secure2 = true
+      } else {
+         this.eye2 = "eye"
+         this.secure2 = false
       }
    }
    checkValidity = () => {
@@ -41,9 +50,9 @@ class SignUp extends React.Component {
    }
    handleContinue = async () => {
       if (!this.buttonDisabled) {
-         await API.setParam("name", this.name)
-         await API.setParam("email", this.email)
-         await API.setParam("password", this.pass2)
+         this.props.store.updateName(this.name)
+         this.props.store.updateEmail(this.email)
+         this.props.store.updatePassword(this.pass2)
          this.props.navigation.navigate("Home")
       }
    }  
@@ -73,7 +82,7 @@ class SignUp extends React.Component {
                icon="key" 
                icon2={this.eye1}
                placeholder="Enter Password"
-               onPressEye={() => this.handlePressEye("eye1", "secure1")}
+               onPressEye={this.handlePressEye1}
                secure={this.secure1}
                onChange={txt => this.pass1 = txt}
                value={this.pass1}
@@ -85,7 +94,7 @@ class SignUp extends React.Component {
                icon="key" 
                icon2={this.eye2}
                placeholder="Repeat Password"
-               onPressEye={() => this.handlePressEye("eye2", "secure2")}
+               onPressEye={this.handlePressEye2}
                secure={this.secure2}
                onChange={txt => this.pass2 = txt}
                value={this.pass2}

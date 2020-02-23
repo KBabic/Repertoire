@@ -1,8 +1,7 @@
 import React from 'react'
-import { View, Text, Image, ScrollView } from 'react-native'
+import { View, Text, Image, ScrollView, BackHandler } from 'react-native'
 import { styles } from './movieStyles'
 import Header from '../../components/Header/Header'
-import Button from '../../components/Button/Button'
 import API, { imageBaseUrl } from '../../API'
 
 export default class Movie extends React.Component {
@@ -16,13 +15,19 @@ export default class Movie extends React.Component {
         popularity: null
     }
     async componentDidMount() {
+        BackHandler.addEventListener("hardwareBackPress", this.handleAndroidBack)
         this._mounted = true
         this.id = await API.getParam("movieId")
         const movie = await API.getMovie(this.id)
         movie && this.updateState(movie)
     }
     componentWillUnmount() {
+        BackHandler.removeEventListener("hardwareBackPress", this.handleAndroidBack)
         this._mounted = false
+    }
+    handleAndroidBack = () => {
+        this.props.navigation.goBack()
+        return true
     }
     updateState = (obj) => {
         this.setState({
@@ -56,7 +61,6 @@ export default class Movie extends React.Component {
             <View style={container}>
                 <Header
                     leftIcon="chevron-left"
-                    // rightIcon="bars"
                     onPressLeftIcon={() => this.props.navigation.goBack()}
                 />
                 <ScrollView>

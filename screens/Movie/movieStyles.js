@@ -4,7 +4,8 @@ export const styles = EStyleSheet.create({
    container: {
         flex: 1,
         justifyContent: "center",
-        backgroundColor: "#ffffff"
+        backgroundColor: "#ffffff",
+        paddingBottom: "50rem"
    },
    imageContainer: {
        flex: 0.3,
@@ -26,14 +27,14 @@ export const styles = EStyleSheet.create({
    textTitle: {
        fontSize: "22rem",
        fontWeight: "bold",
-       color: "#0040C9",
+       color: "#4a4f54",
        textAlign: "center",
        paddingBottom: "5rem"
    }, 
    textTagline: {
         fontSize: "20rem",
         fontWeight: "bold",
-        color: "#0040C9",
+        color: "#4a4f54",
         textAlign: "center",
         paddingBottom: "5rem"
    },
@@ -45,7 +46,7 @@ export const styles = EStyleSheet.create({
    textTitleSmall: {
         fontSize: "18rem",
         fontWeight: "bold",
-        color: "#0040C9",
+        color: "#4a4f54",
         paddingBottom: "5rem"
    }
 })

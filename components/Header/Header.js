@@ -14,6 +14,7 @@ const Header = props => {
                         type="font-awesome"
                         name={props.leftIcon}
                         color="#0040C9"
+                        size={22}
                     />
                 </TouchableOpacity>
             )}
@@ -25,6 +26,7 @@ const Header = props => {
                         type="font-awesome"
                         name={props.rightIcon}
                         color="#0040C9"
+                        size={22}
                     />
                 </TouchableOpacity>
             )}

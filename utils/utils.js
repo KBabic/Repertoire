@@ -24,10 +24,10 @@ export const genres = [
       id: 777,
       name: "All"
     },
-    {
-      id: 888,
-      name: "Favorites"
-    },
+    // {
+    //   id: 888,
+    //   name: "Favorites"
+    // },
     {
       id: 28,
       name: "Action"

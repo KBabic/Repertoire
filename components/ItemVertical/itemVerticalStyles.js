@@ -32,14 +32,14 @@ export const styles = EStyleSheet.create({
    },
    title: {
       fontSize: "16rem",
-      color: "#3e4042",
+      color: "#4a4f54",
       padding: "5rem",
       paddingLeft: "10rem",
       fontWeight: "bold"
    },
    description: {
       fontSize: "14rem",
-      color: "#3e4042",
+      color: "#32A1F0",
       padding: "5rem",
       paddingLeft: "10rem"
    }

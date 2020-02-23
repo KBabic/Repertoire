@@ -43,7 +43,7 @@ export default class SignUp extends React.Component {
          await API.setParam("email", email)
          await API.setParam("password", pass2)
 
-         this.props.navigation.navigate("LogIn")
+         this.props.navigation.navigate("Home")
       }
    }  
    render() {

@@ -7,8 +7,8 @@ export const styles = EStyleSheet.create({
    },
    title: {
       padding: "10rem",
-      paddingLeft: "20rem",
-      color: "#0040C9",
+      textAlign: "center",
+      color: "#4a4f54",
       fontSize: "18rem",
       fontWeight: "bold"
    },
@@ -22,4 +22,7 @@ export const styles = EStyleSheet.create({
       zIndex: 100,  
       backgroundColor: '#00000070'
   },
+  list: {
+     paddingBottom: "90rem"
+  }
 })

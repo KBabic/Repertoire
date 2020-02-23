@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, FlatList, ActivityIndicator, Animated, Dimensions } from 'react-native'
+import { View, Text, FlatList, ActivityIndicator, Animated, Dimensions, BackHandler } from 'react-native'
 import ItemVertical from '../../components/ItemVertical/ItemVertical'
 import ItemHorizontal from '../../components/ItemHorizontal/ItemHorizontal'
 import Header from '../../components/Header/Header'
@@ -22,7 +22,11 @@ export default class Home extends React.Component {
       x: new Animated.Value(-windowWidth)
    }
    async componentDidMount() {
+      BackHandler.addEventListener("hardwareBackPress", () => true)
       this.getNowPlaying(1) && this.getUpcoming(1) && this.setState({ loading: false })
+   }
+   componentWillUnmount() {
+      BackHandler.removeEventListener("hardwareBackPress", () => true)
    }
    async getNowPlaying(i) {
       const nowPlaying = await API.getList(API.getNowPlayingUrl(i))
@@ -65,12 +69,13 @@ export default class Home extends React.Component {
       )
    }
    renderItemHorizontal = ({ item }) => {
-      const { id, backdrop_path, original_title } = item
+      const { id, backdrop_path, original_title, release_date } = item
       return (
          <ItemHorizontal
             key={id}
             source={backdrop_path}
             title={original_title}
+            description={`Release date: ${release_date}`}
             onPress={() => this.handlePressItem(id)}
          />
       )
@@ -83,13 +88,15 @@ export default class Home extends React.Component {
       if (this.state.menuOpen) {
          Animated.timing(this.state.x, {
             toValue: -windowWidth,
-            duration: 300
+            duration: 250,
+            useNativeDriver: true
          }).start(() => this.setState({ menuOpen: false }))
          
       } else {
          Animated.timing(this.state.x, {
             toValue: 0,
-            duration: 300
+            duration: 250,
+            useNativeDriver: true
          }).start(() => this.setState({ menuOpen: true }))
       }
    }
@@ -106,21 +113,22 @@ export default class Home extends React.Component {
    }
    handlePressGenre = async (id) => {
       // if user pressed All or Favorites
-      if (id === 777 || id === 888){
+      if (id === 777 /*|| id === 888*/){
          this.setState({ currentGenre: id })
          await this.resetSearch()
       // if user pressed one of the genres
       } else {
+         this.setState({ currentGenre: id })
          await this.resetSearch()
          this.setState({ 
-            currentGenre: id,
+            // currentGenre: id,
             nowPlaying: filterByGenre(this.state.nowPlaying, id),
             upcoming: filterByGenre(this.state.upcoming, id)
          })
       }
    }
    render() {
-      const { container, title, menu } = styles
+      const { container, title, menu, list } = styles
       if (this.state.loading) {
          return (
             <View style={styles.container}>
@@ -164,6 +172,7 @@ export default class Home extends React.Component {
                      keyExtractor={item => item.id.toString()}
                      onEndReached={this.handleLoadMorePlaying}
                      onEndReachedThreshold={0}
+                     contentContainerStyle={list}
                   />
                </View>
             </View>

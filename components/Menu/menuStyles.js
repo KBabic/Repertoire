@@ -2,10 +2,10 @@ import EStyleSheet from 'react-native-extended-stylesheet'
 import '../../assets/global/globalStyles'
 export const styles = EStyleSheet.create({
     innerContainer: {
-        flex: 0.9,
+        flex: 1,
         width: "190rem",
         backgroundColor: "#32A1F0",
-        borderBottomRightRadius: "60rem",
+        // borderBottomRightRadius: "20rem",
     },
     listContainer: {
         flex: 0.92,
